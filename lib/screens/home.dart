@@ -1,3 +1,4 @@
+import 'package:aula/delegates/data_search.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -12,7 +13,7 @@ class Home extends StatelessWidget {
           child: Image.asset("images/youtube_logo.png"),
         ),
         elevation: 0,
-        backgroundColor: Colors.black12,
+        backgroundColor: Colors.black,
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
@@ -25,6 +26,10 @@ class Home extends StatelessWidget {
           ),
           IconButton(
             onPressed: () {
+              showSearch(
+                context: context, 
+                delegate: DataSearch(),
+              );
             }, 
             icon: Icon(Icons.search),
           ),
