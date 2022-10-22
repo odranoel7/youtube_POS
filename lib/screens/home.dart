@@ -1,4 +1,9 @@
+import 'dart:ui';
+
+import 'package:aula/blocs/video_bloc.dart';
 import 'package:aula/delegates/data_search.dart';
+import 'package:aula/widgets/videotile.dart';
+import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -6,6 +11,8 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final VideosBloc videosBloc = BlocProvider.getBloc<VideosBloc>();
+
     return Scaffold(
       appBar: AppBar(
         title: Container(
@@ -27,14 +34,36 @@ class Home extends StatelessWidget {
           IconButton(
             onPressed: () async {
               String? result = await showSearch(context: context, delegate: DataSearch());
-              print(result);
+              if (result != null ) {
+                videosBloc.inSearch.add(result);
+              }
             }, 
             icon: Icon(Icons.search),
           ),
         ],
       ),
-      body: Container(
-        child: Text("Lista de Vídeos"),
+      backgroundColor: Colors.black,
+      body: StreamBuilder(
+        stream: videosBloc.outVideos,
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if(snapshot.hasData) {
+            return ListView.builder(
+              itemBuilder: (BuildContext context, int index) {
+                return VideoTile(snapshot.data[index]);
+              },
+              itemCount: snapshot.data.length,
+            );
+          } else {
+            return Center(
+              child: Text(
+                'Busque um vídeo',
+                style: TextStyle(
+                  color: Colors.white
+                ),
+              ),
+            );
+          }
+        }
       ),
 
     );
