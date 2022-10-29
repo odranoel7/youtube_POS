@@ -45,13 +45,30 @@ class Home extends StatelessWidget {
       backgroundColor: Colors.black,
       body: StreamBuilder(
         stream: videosBloc.outVideos,
+        initialData: [],
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           if(snapshot.hasData) {
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return VideoTile(snapshot.data[index]);
+                if (index < snapshot.data.length) {
+                  return VideoTile(snapshot.data[index]);
+                } else if (index > 1){
+                  videosBloc.inSearch.add(null);
+                  return Container(
+                    height: 40,
+                    width: 40,
+                    alignment: Alignment.center,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Colors.red),
+                    )
+                  );
+                } else {
+                  return Container(
+                    child: Text("Busque pelo termo de seu video"),
+                  );
+                }
               },
-              itemCount: snapshot.data.length,
+              itemCount: snapshot.data.length+1,
             );
           } else {
             return Center(
