@@ -1,7 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.aula">
+
+    <!-- <users-permission android:name="android.permission.INTERNET" /> -->
+
+
    <application
-        android:label="aula"
+        android:label="YouFlutter app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
