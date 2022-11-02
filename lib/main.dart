@@ -1,3 +1,4 @@
+import 'package:aula/blocs/favoritos_bloc.dart';
 import 'package:aula/blocs/video_bloc.dart';
 import 'package:aula/screens/home.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
@@ -15,6 +16,7 @@ class YouFlutter extends StatelessWidget {
     return BlocProvider(
       blocs: [
         Bloc((i) => VideosBloc()),
+        Bloc((i) => FavoritosBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

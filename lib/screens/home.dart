@@ -1,7 +1,9 @@
 import 'dart:ui';
 
+import 'package:aula/blocs/favoritos_bloc.dart';
 import 'package:aula/blocs/video_bloc.dart';
 import 'package:aula/delegates/data_search.dart';
+import 'package:aula/screens/favoritos.dart';
 import 'package:aula/widgets/videotile.dart';
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final VideosBloc videosBloc = BlocProvider.getBloc<VideosBloc>();
+    final FavoritosBloc favBloc = BlocProvider.getBloc<FavoritosBloc>();
 
     return Scaffold(
       appBar: AppBar(
@@ -24,10 +27,24 @@ class Home extends StatelessWidget {
         actions: <Widget>[
           Align(
             alignment: Alignment.center,
-            child: Text("0"),
+            child: StreamBuilder(
+              stream: favBloc.outFav,
+              initialData: {},
+              builder: (BuildContext context, AsyncSnapshot snapshot) {
+                if (snapshot.hasData) {
+                  return Text("${snapshot.data.length}");
+                } else {
+                  return Text("0");
+                }
+              },
+
+            ),
           ),
           IconButton(
             onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Favoritos(),
+              ));
             }, 
             icon: Icon(Icons.stars),
           ),
@@ -64,7 +81,13 @@ class Home extends StatelessWidget {
                   );
                 } else {
                   return Container(
-                    child: Text("Busque pelo termo de seu video"),
+                    child: Text(
+                      "Busque pelo termo de seu video",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                      ),
+                    ),
                   );
                 }
               },
